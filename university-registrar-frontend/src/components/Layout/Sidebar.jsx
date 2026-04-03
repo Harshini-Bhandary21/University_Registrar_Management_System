@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+
 import { 
     LayoutDashboard, 
     Database, 
@@ -8,14 +9,20 @@ import {
     Settings,
     GraduationCap,
     ChevronLeft,
-    ChevronRight
+    ChevronRight,
+    Calendar,
+    Award,
+    UserPlus
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
     const menuItems = [
         { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
         { path: '/data-entry', icon: Database, label: 'Data Entry' },
+         { path: '/enrollment', icon: UserPlus, label: 'Course Enrollment' },
         { path: '/view-search', icon: Search, label: 'View & Search' },
+        { path: '/exams', icon: Calendar, label: 'Exam Management' },
+        { path: '/results', icon: Award, label: 'Result Management' },
         { path: '/student-report', icon: FileText, label: 'Student Report' },
         { path: '/advanced', icon: Settings, label: 'Advanced' },
     ];
@@ -28,7 +35,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                     {isOpen && (
                         <div>
                             <h1 className="text-lg font-bold">UniRegistrar</h1>
-                            <p className="text-xs text-gray-400">Management System</p>
+                            <p className="text-xs text-gray-400">Admin Portal</p>
                         </div>
                     )}
                 </div>
@@ -61,6 +68,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             </nav>
             
             <div className="p-3 border-t border-gray-700">
+                <div className="bg-gray-800 rounded-lg p-3 mb-3">
+                    <p className="text-xs text-gray-400">Logged in as</p>
+                    <p className="text-sm font-semibold text-white">Administrator</p>
+                    <p className="text-xs text-gray-400">Registrar Office</p>
+                </div>
                 <button
                     onClick={() => {
                         localStorage.removeItem('token');

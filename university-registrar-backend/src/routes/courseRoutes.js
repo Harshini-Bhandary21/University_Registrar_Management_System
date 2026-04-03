@@ -15,7 +15,6 @@ const router = express.Router();
 router.get('/', authMiddleware, getAllCourses);
 router.get('/department/:deptId', authMiddleware, getCoursesByDepartment);
 router.get('/:id', authMiddleware, getCourseById);
-
 router.post('/', authMiddleware, requireRole('admin'), createCourse);
 router.post('/:courseNo/prerequisite', authMiddleware, requireRole('admin'), addPrerequisite);
 router.put('/:id', authMiddleware, requireRole('admin'), updateCourse);

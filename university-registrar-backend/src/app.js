@@ -25,11 +25,9 @@ app.use(cors(corsOptions));
 
 // Rate limiting
 const limiter = rateLimit({
-    windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
-    max: parseInt(process.env.RATE_LIMIT_MAX) || 100,
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100,
     message: 'Too many requests from this IP, please try again later.',
-    standardHeaders: true,
-    legacyHeaders: false,
 });
 app.use('/api', limiter);
 
@@ -61,6 +59,9 @@ app.use('/api/courses', require('./routes/courseRoutes'));
 app.use('/api/instructors', require('./routes/instructorRoutes'));
 app.use('/api/departments', require('./routes/departmentRoutes'));
 app.use('/api/enrollments', require('./routes/enrollmentRoutes'));
+app.use('/api/course-offerings', require('./routes/courseOfferingRoutes'));
+app.use('/api/exams', require('./routes/examRoutes'));
+app.use('/api/results', require('./routes/resultRoutes'));
 app.use('/api/reports', require('./routes/reportRoutes'));
 app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 

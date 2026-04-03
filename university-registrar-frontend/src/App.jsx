@@ -1,14 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Layout/Navbar';
 import Sidebar from './components/Layout/Sidebar';
 import Dashboard from './pages/Dashboard';
 import DataEntry from './pages/DataEntry';
 import ViewSearch from './pages/ViewSearch';
+import CourseEnrollment from './pages/CourseEnrollment';
 import StudentReport from './pages/StudentReport';
 import AdvancedFeatures from './pages/AdvancedFeatures';
+import ExamManagement from './pages/ExamManagement';
+import ResultManagement from './pages/ResultManagement';
 import Login from './pages/Login';
+
+
 
 const AppLayout = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -45,7 +50,12 @@ function App() {
   }
 
   return (
-    <Router>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <Toaster 
         position="top-right"
         toastOptions={{
@@ -94,11 +104,47 @@ function App() {
           }
         />
         <Route
+            path="/enrollment"
+            element={
+                isAuthenticated ? (
+                    <AppLayout>
+                        <CourseEnrollment />
+                    </AppLayout>
+                ) : (
+                    <Navigate to="/login" />
+                )
+            }
+        />
+        <Route
           path="/view-search"
           element={
             isAuthenticated ? (
               <AppLayout>
                 <ViewSearch />
+              </AppLayout>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/exams"
+          element={
+            isAuthenticated ? (
+              <AppLayout>
+                <ExamManagement />
+              </AppLayout>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/results"
+          element={
+            isAuthenticated ? (
+              <AppLayout>
+                <ResultManagement />
               </AppLayout>
             ) : (
               <Navigate to="/login" />
@@ -130,7 +176,7 @@ function App() {
           }
         />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 

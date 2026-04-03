@@ -8,8 +8,9 @@ const { authMiddleware } = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/stats', authMiddleware, getDashboardStats);
-router.get('/activity', authMiddleware, getRecentActivity);
-router.get('/enrollment-trends', authMiddleware, getEnrollmentTrends);
+router.use(authMiddleware);
+router.get('/stats', getDashboardStats);
+router.get('/activity', getRecentActivity);
+router.get('/enrollment-trends', getEnrollmentTrends);
 
 module.exports = router;

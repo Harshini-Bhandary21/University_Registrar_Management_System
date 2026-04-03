@@ -3,20 +3,18 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-// Create connection pool
+// Create connection pool - removed invalid options
 const pool = mysql.createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'university_registrar',
     port: parseInt(process.env.DB_PORT) || 3306,
     waitForConnections: true,
     connectionLimit: 20,
     queueLimit: 0,
     enableKeepAlive: true,
-    keepAliveInitialDelay: 0,
-    acquireTimeout: 60000,
-    timeout: 60000
+    keepAliveInitialDelay: 0
 });
 
 // Promisify pool queries
@@ -53,12 +51,12 @@ const transaction = async (callback) => {
     try {
         const result = await callback(connection);
         await connection.commit();
+        connection.release();
         return { success: true, data: result };
     } catch (error) {
         await connection.rollback();
-        return { success: false, error: error.message };
-    } finally {
         connection.release();
+        return { success: false, error: error.message };
     }
 };
 

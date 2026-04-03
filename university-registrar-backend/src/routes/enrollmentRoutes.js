@@ -1,18 +1,20 @@
 const express = require('express');
 const {
+    getAllEnrollments,
     enrollStudent,
+    dropEnrollment,
     getStudentEnrollments,
-    getCourseEnrollments,
-    dropEnrollment
+    getAvailableCourses
 } = require('../controllers/enrollmentController');
 const { authMiddleware, requireRole } = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/student/:studentId', authMiddleware, getStudentEnrollments);
-router.get('/course/:courseNo/:year/:semester/:section', authMiddleware, getCourseEnrollments);
-
-router.post('/', authMiddleware, enrollStudent);
-router.delete('/', authMiddleware, requireRole('admin'), dropEnrollment);
+router.use(authMiddleware);
+router.get('/all', getAllEnrollments);
+router.get('/student/:studentId', getStudentEnrollments);
+router.get('/available/:studentId', getAvailableCourses);
+router.post('/', requireRole('admin'), enrollStudent);
+router.delete('/', requireRole('admin'), dropEnrollment);
 
 module.exports = router;

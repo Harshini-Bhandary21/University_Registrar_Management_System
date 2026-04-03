@@ -16,7 +16,6 @@ router.get('/', authMiddleware, getAllInstructors);
 router.get('/search', authMiddleware, searchInstructors);
 router.get('/department/:deptId', authMiddleware, getInstructorsByDepartment);
 router.get('/:id', authMiddleware, getInstructorById);
-
 router.post('/', authMiddleware, requireRole('admin'), createInstructor);
 router.put('/:id', authMiddleware, requireRole('admin'), updateInstructor);
 router.delete('/:id', authMiddleware, requireRole('admin'), deleteInstructor);

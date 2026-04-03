@@ -10,10 +10,11 @@ const { authMiddleware } = require('../middleware/auth');
 
 const router = express.Router();
 
-router.get('/student/:studentId', authMiddleware, generateStudentReport);
-router.get('/department/:deptId', authMiddleware, generateDepartmentReport);
-router.get('/search', authMiddleware, globalSearch);
-router.get('/statistics/programs', authMiddleware, getProgramStatistics);
-router.get('/statistics/grades', authMiddleware, getGradeDistribution);
+router.use(authMiddleware);
+router.get('/student/:studentId', generateStudentReport);
+router.get('/department/:deptId', generateDepartmentReport);
+router.get('/search', globalSearch);
+router.get('/statistics/programs', getProgramStatistics);
+router.get('/statistics/grades', getGradeDistribution);
 
 module.exports = router;

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GraduationCap, Lock, User, LogIn, Eye, EyeOff } from 'lucide-react';
+import { GraduationCap, Lock, User, LogIn, Eye, EyeOff, Shield } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { authService } from '../services/authService';
+import api from '../services/api';
 
 const Login = ({ setIsAuthenticated }) => {
     const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -19,7 +19,7 @@ const Login = ({ setIsAuthenticated }) => {
         
         setLoading(true);
         try {
-            const response = await authService.login(credentials);
+            const response = await api.post('/auth/login', credentials);
             const { token, user } = response.data.data;
             
             localStorage.setItem('token', token);
@@ -29,7 +29,7 @@ const Login = ({ setIsAuthenticated }) => {
             toast.success(`Welcome back, ${user.name}!`);
             navigate('/');
         } catch (error) {
-            toast.error(error.response?.data?.message || 'Login failed. Please try again.');
+            toast.error(error.response?.data?.message || 'Invalid credentials. Use admin/admin123');
         } finally {
             setLoading(false);
         }
@@ -49,13 +49,17 @@ const Login = ({ setIsAuthenticated }) => {
                         UniRegistrar
                     </h1>
                     <p className="text-gray-500 mt-2">University Registrar Management System</p>
+                    <div className="flex items-center justify-center gap-2 mt-2">
+                        <Shield size={14} className="text-blue-500" />
+                        <p className="text-xs text-gray-400">Administrator Portal - Single User Access</p>
+                    </div>
                 </div>
 
                 {/* Login Card */}
                 <div className="card p-8 animate-slide-up">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label className="input-label">Username</label>
+                            <label className="input-label">Admin Username</label>
                             <div className="relative">
                                 <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                                 <input
@@ -63,7 +67,7 @@ const Login = ({ setIsAuthenticated }) => {
                                     value={credentials.username}
                                     onChange={(e) => setCredentials({ ...credentials, username: e.target.value })}
                                     className="input-field pl-10"
-                                    placeholder="Enter your username"
+                                    placeholder="Enter admin username"
                                     autoComplete="username"
                                 />
                             </div>
@@ -78,7 +82,7 @@ const Login = ({ setIsAuthenticated }) => {
                                     value={credentials.password}
                                     onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                                     className="input-field pl-10 pr-10"
-                                    placeholder="Enter your password"
+                                    placeholder="Enter admin password"
                                     autoComplete="current-password"
                                 />
                                 <button
@@ -101,7 +105,7 @@ const Login = ({ setIsAuthenticated }) => {
                             ) : (
                                 <>
                                     <LogIn size={18} />
-                                    <span>Sign In</span>
+                                    <span>Sign In as Administrator</span>
                                 </>
                             )}
                         </button>
@@ -110,6 +114,9 @@ const Login = ({ setIsAuthenticated }) => {
                     <div className="mt-6 pt-6 border-t text-center">
                         <p className="text-sm text-gray-500">
                             Demo Credentials: <span className="font-mono bg-gray-100 px-2 py-1 rounded">admin / admin123</span>
+                        </p>
+                        <p className="text-xs text-gray-400 mt-2">
+                            This system is for authorized personnel only
                         </p>
                     </div>
                 </div>
