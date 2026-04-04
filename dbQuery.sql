@@ -1,9 +1,6 @@
 -- ============================================
 -- COMPLETE UNIVERSITY REGISTRAR DATABASE
  -- ============================================
--- Version: 2.0
--- All constraints fixed, no foreign key errors
--- ============================================
 
 -- Drop database if exists and recreate
 DROP DATABASE IF EXISTS university_registrar;
